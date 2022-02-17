@@ -1,0 +1,11 @@
+services:
+  jupyter:
+    build: .
+    ports:
+      - 8888:8888
+    volumes:
+      - ./jupyter:/work
+
+  spark:
+    image: bitnami/spark:3.2.1
+    
