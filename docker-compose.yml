@@ -5,6 +5,9 @@ services:
       - 8888:8888
     volumes:
       - ./jupyter:/work
+    environment:
+      - TZ=Europe/Lisbon
+      - DEBIAN_FRONTEND=noninteractive
 
   spark:
     image: bitnami/spark:3.2.1

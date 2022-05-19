@@ -1,28 +1,31 @@
 FROM ubuntu:22.04
 
+RUN apt update && apt install -y tzdata
+
 #Install Java, Scala and wget
-RUN apt-get update && \
-    apt-get install -y software-properties-common && \
+RUN apt update && \
+    apt install -y software-properties-common && \
     apt install -y openjdk-8-jdk && \
     apt install -y openjdk-8-jre && \
-    apt-get install -y scala && \
-    apt-get install -y wget && \
-    apt-get install -y ca-certificates-java && \
-    apt-get clean && \
+    apt install -y scala && \
+    apt install -y wget && \
+    apt install -y ca-certificates-java && \
+    apt clean && \
     update-ca-certificates -f;
 
 RUN export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
 # Install python
 RUN add-apt-repository -y ppa:deadsnakes/ppa && \
-    apt install -y python3.9 && \
-    apt-get install -y python3-pip
+    apt install -y python3.10 && \
+    apt install -y python3-pip && \
+    apt install -y libffi-dev
 
 
 # Change user to docker
-RUN adduser --system docker
-USER docker
-ENV PATH "$PATH:/home/docker/.local/bin"
+# RUN adduser --system docker
+# USER docker
+# ENV PATH "$PATH:/home/docker/.local/bin"
 
 # Install jupyter, py4j and pyspark
 RUN pip3 install jupyter && \
@@ -43,4 +46,4 @@ RUN export PYSPARK_PYTHON=/usr/bin/python3
 RUN export PYSPARK_DRIVER_PYTHON="jupyter"
 RUN export PYSPARK_DRIVER_PYTHON_OPTS="notebook"
 
-ENTRYPOINT [ "jupyter", "notebook", "--ip",  "0.0.0.0"]
+ENTRYPOINT [ "jupyter", "notebook", "--ip",  "0.0.0.0", "--allow-root"]
